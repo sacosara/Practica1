@@ -1,16 +1,15 @@
 package com.kairos.server.model;
 
 
-import org.springframework.amqp.core.Queue;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+	import org.springframework.amqp.core.Queue;
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	import org.springframework.context.annotation.Profile;
 
-//@Profile({"worker","hello-world"})
-@Configuration
-public class SenderRabbitConfig  {
+	@Configuration
+	public class RabbitReceiverConfiguration  {
 
-     // Nombre de la cola
+	  // Nombre de la cola
 	  private String queue = "taskProgress";
 	  // nombre del exchange
 	  private String exchange = "taskProgress-Exchange";
@@ -63,6 +62,5 @@ public class SenderRabbitConfig  {
 		  rabbitTemplate.setMessageConverter(jsonMessageConverter());
 		  return rabbitTemplate;
 	  }
-
 
 }

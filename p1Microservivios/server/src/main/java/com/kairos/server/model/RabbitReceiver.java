@@ -3,11 +3,15 @@ package com.kairos.server.model;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
-@RabbitListener(queues = "tasksProgress")
+@Service
 public class RabbitReceiver {
 
-	@RabbitHandler
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+	@RabbitListener(queues = "tasksProgress")
     public void receive(String in) {
+        TaskResponse taskResponse = objectMapper.convertValue(in,TaskResponse.class);
+        TaskManager.storeTask(taskResponse);
         System.out.println(" [x] Received '" + in + "'");
     }
 

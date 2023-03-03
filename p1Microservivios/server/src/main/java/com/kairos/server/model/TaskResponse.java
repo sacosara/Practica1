@@ -10,4 +10,11 @@ public class TaskResponse {
 	 private boolean completed;
 	 private String result;
 
+	 public void copy(TaskResponse task) {
+		setText(task.getText());
+		setCompleted(task.isCompleted());
+		setProgress(task.getProgress());
+		setResult(task.getResult());
+	}
+
 }

@@ -1,13 +1,13 @@
 version: "3"
 services:
   client:
-    image: your-client-image
+    image: client-image
     depends_on:
       - service
     ports:
       - "8080:8080"
   service:
-    image: your-service-image
+    image: service-image
     depends_on:
       - rabbitmq
     ports:
@@ -17,7 +17,7 @@ services:
     links:
       - rabbitmq
   worker:
-    image: your-worker-image
+    image: worker-image
     depends_on:
       - rabbitmq
     environment:
@@ -25,7 +25,7 @@ services:
     links:
       - rabbitmq
   external-service:
-    image: your-external-service-image
+    image: external-service-image
     depends_on:
       - rabbitmq
     environment:

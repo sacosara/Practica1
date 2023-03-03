@@ -6,9 +6,15 @@ import java.util.HashMap;
 
 public class TaskManager {
 	private int serialIdTask = 0;
-	private RabbitSender rabbitSender = new RabbitSender();
-	private ObjectMapper objectMapper = new ObjectMapper();
-	private HashMap<Integer, TaskResponse> taskStore = new HashMap<>();
+	private RabbitSender rabbitSender;
+	private ObjectMapper objectMapper;
+	private static HashMap<Integer, TaskResponse> taskStore = new HashMap<>();
+
+	public TaskManager(){
+		rabbitSender = new RabbitSender(new RabbitTemplate());
+		objectMapper = new ObjectMapper();
+
+	}
 	
 	private synchronized int getId(){
 		int id = serialIdTask;
@@ -45,6 +51,18 @@ public class TaskManager {
 		}
 		return taskResponse;
 	}
+
+	public static void storeTask(TaskResponse task) {
+        TaskResponse taskTemp = taskStore.get(task.getId());
+        if(taskTemp != null) {
+            taskTemp.copy(task);
+            taskStore.put(taskTemp.getId(), taskTemp);
+        }
+        else {
+            //taskStore.put(task.getId(), task);
+			System.out.println("Error la tarea no existe");
+        }
+    }
 	
 	public void receiveTask() {
 		rabbitReceiver.receive();
