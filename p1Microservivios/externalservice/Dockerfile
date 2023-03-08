@@ -1,19 +1,11 @@
-# Use an official Java 8 runtime as a parent image
-FROM openjdk:8-jre-slim
+FROM maven:3.8.4-openjdk-8
 
-# Set the working directory to /app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+COPY . /app/externalService
 
-# Install any needed packages specified in pom.xml
-RUN apt-get update && \
-    apt-get install -y maven && \
-    mvn package
+RUN mvn dependency:resolve
 
-# Expose the port that the service will be listening on
 EXPOSE 50051
 
-# Define the command to run the service when the container starts
-CMD [ "java", "-jar", "./target/grpc-server.jar" ]
+CMD ["mvn", "spring-boot:run"]
