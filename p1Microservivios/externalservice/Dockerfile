@@ -12,3 +12,4 @@ FROM openjdk:8
 COPY --from=build /home/app/target/externalservice-0.0.1-SNAPSHOT.jar /usr/local/lib/externalservice.jar
 EXPOSE 50051
 ENTRYPOINT [ "java", "-jar", "./target/grpc-server.jar" ]
+

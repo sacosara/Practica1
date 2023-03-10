@@ -1,8 +1,11 @@
+
 FROM maven:4.0.0-openjdk-8 AS Build
 
 WORKDIR /app
+
 COPY . /app/server
 COPY target/server-0.0.1-SNAPSHOT.jar /app/server.jar
+
 
 # Install RabbitMQ libraries
 RUN apk add --no-cache bash curl
