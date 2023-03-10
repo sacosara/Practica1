@@ -1,17 +1,15 @@
-FROM openjdk:8-jdk-alpine
+FROM maven:4.0.0-openjdk-8
 
-# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos necesarios
-COPY target/worker.jar /app/worker.jar
-COPY rabbitmq.properties /app/rabbitmq.properties
+COPY . /app/worker
 
-# Instala los paquetes necesarios
-RUN apk add --no-cache bash
+RUN mvn clean install -U
 
-# Define la variable de entorno para el archivo de propiedades de RabbitMQ
-ENV RABBITMQ_CONFIG_FILE /app/rabbitmq.properties
+FROM openjdk:8
+COPY --from=build /home/app/target/worker-0.0.1-SNAPSHOT.jar /usr/local/lib/worker.jar
 
+EXPOSE 8085
 # Ejecuta el worker al iniciar el contenedor
-CMD ["java", "-jar", "/app/worker.jar"]
+#CMD?
+ENTRYPOINT ["java", "-jar", "/app/worker.jar"]

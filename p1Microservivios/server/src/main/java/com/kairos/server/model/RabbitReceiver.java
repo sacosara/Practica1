@@ -8,7 +8,7 @@ public class RabbitReceiver {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-	@RabbitListener(queues = "tasksProgress")
+	@RabbitListener(queues = "tasksProgress", ackMode = "AUTO")
     public void receive(String in) {
         TaskResponse taskResponse = objectMapper.convertValue(in,TaskResponse.class);
         TaskManager.storeTask(taskResponse);

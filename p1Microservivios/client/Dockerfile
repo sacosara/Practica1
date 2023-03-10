@@ -1,13 +1,11 @@
-FROM openjdk:11-jre-slim
+FROM node:14-alpine
 
-# Directorio de trabajo
 WORKDIR /app
 
-# Copiar los archivos del cliente al directorio de trabajo
-COPY target/cliente-0.0.1-SNAPSHOT.jar /app/cliente.jar
+COPY . /app/client
 
-# Expone el puerto 8080 en el contenedor
-EXPOSE 8080
+RUN npm install express
 
-# Inicia la aplicación al inicio del contenedor
-ENTRYPOINT ["java", "-jar", "/app/cliente.jar"]
+EXPOSE 80
+
+CMD ["node", "client.js"]

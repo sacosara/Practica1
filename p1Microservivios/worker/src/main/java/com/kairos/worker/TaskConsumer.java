@@ -21,9 +21,10 @@ public class TaskConsumer {
     private TaskProducer taskProducer;
 
     @RabbitListener(queues = "newTasks", ackMode = "AUTO")
-    public void received (Task message) throws InterruptedException{
-        log.info("Received message as generic: {}", message.toString());
-        final Request request = Request.newBuilder().setText(message.getText()).build();
+    public void received (String message) throws InterruptedException{
+        Task task = ObjectMapper.convertValue(message,Task.class);
+        log.info("Received message as generic: {}", task.toString());
+        final Request request = Request.newBuilder().setText(task.getText()).build();
         final Response response = client.toUpperCase(request);
         for (int i = 1; i< MAX_LOOP; i++){
             Thread.sleep(1000);
